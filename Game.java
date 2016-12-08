@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
@@ -12,6 +12,7 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.util.UITimer;
 
+@SuppressWarnings("rawtypes")
 public class Game extends Form implements ActionListener, Runnable{
 	private GameWorld gw;
 	private MapView mv;
@@ -29,9 +30,6 @@ public class Game extends Form implements ActionListener, Runnable{
 	private Button leftButton = new Button("Left");
 	private Button moveToAstroButton = new Button("MoveToAstronaut");
 	private Button healButton = new Button("Heal");
-	
-	
-
 	
 	public Game(){
 		 gw = new GameWorld(); // create “Observable” GameWorld
@@ -78,37 +76,7 @@ public class Game extends Form implements ActionListener, Runnable{
 		 HealCommand myHealCommand = new HealCommand(gw);
 		 healButton.setCommand(myHealCommand);	 
 		 healButton.setEnabled(false);
-		 
-		 /*Button newAlienButton = new Button("NewAlien");
-		 newAlienButton.getUnselectedStyle().setBgTransparency(255);
-		 newAlienButton.getUnselectedStyle().setBgColor(ColorUtil.BLUE);
-		 newAlienButton.getUnselectedStyle().setFgColor(ColorUtil.WHITE);
-		 newAlienButton.getAllStyles().setPadding(5,5,0,0);
-		 AlienColCommand myAlienColCommand = new AlienColCommand(gw);
-		 newAlienButton.setCommand(myAlienColCommand);
-		 addKeyListener('w',myAlienColCommand);*/
-		 
-		/* Button fightButton = new Button("Fight");
-		 fightButton.getUnselectedStyle().setBgTransparency(255);
-		 fightButton.getUnselectedStyle().setBgColor(ColorUtil.BLUE);
-		 fightButton.getUnselectedStyle().setFgColor(ColorUtil.WHITE);
-		 fightButton.getAllStyles().setPadding(5,5,0,0);
-		 FightColCommand myFightColCommand = new FightColCommand(gw);
-		 fightButton.setCommand(myFightColCommand);
-		 addKeyListener('f',myFightColCommand);*/
-		 
-		 /*Button tickButton = new Button("Tick");
-		 tickButton.getUnselectedStyle().setBgTransparency(255);
-		 tickButton.getUnselectedStyle().setBgColor(ColorUtil.BLUE);
-		 tickButton.getUnselectedStyle().setFgColor(ColorUtil.WHITE);
-		 tickButton.getAllStyles().setPadding(5,5,0,0);
-		 TickCommand myTickCommand = new TickCommand(gw);
-		 tickButton.setCommand(myTickCommand);
-		 addKeyListener('t',myTickCommand);*/
-		 
-		 //bottomContainer.add(newAlienButton);
-		 //bottomContainer.add(fightButton);
-		 //bottomContainer.add(tickButton);
+
 		 bottomContainer.add(playButton);
 		 bottomContainer.add(healButton);
 		 
@@ -219,8 +187,8 @@ public class Game extends Form implements ActionListener, Runnable{
 		 ScoreCommand myScoreCommand = new ScoreCommand(gw);
 		 scoreButton.setCommand(myScoreCommand);
 		 addKeyListener('s',myScoreCommand);
-		 //side menu(title bar) item
 		 
+		 //side menu(title bar) item		 
 		 rightContainer.add(contractButton);
 		 rightContainer.add(downButton);
 		 rightContainer.add(rightButton);
@@ -228,9 +196,7 @@ public class Game extends Form implements ActionListener, Runnable{
 		 rightContainer.add(scoreButton);
 		 
 		//MIDDLE CONTAINER *****************************************************************************************************
-		 mv.getAllStyles().setBorder(Border.createLineBorder(4,ColorUtil.BLACK));
-		 
-		 
+		 mv.getAllStyles().setBorder(Border.createLineBorder(4,ColorUtil.BLACK));		 
 		 
 		 //SIDE MENU
 		 SoundCommand mySoundCommand = new SoundCommand(gw);
@@ -254,6 +220,7 @@ public class Game extends Form implements ActionListener, Runnable{
 		 if(gw.getSound()==true)
 			 background.play();
 		 
+		 gw.setWorldSize(mv.getX(),mv.getY());
 		 this.show();
 		 
 		 
@@ -267,7 +234,7 @@ public class Game extends Form implements ActionListener, Runnable{
 
 	public void run() {
 		if(gw.getPlayPause()==true){
-			gw.tick(20); //ticks the game one more frame
+			gw.tick(); //ticks the game one more frame
 			playPauseCommand myPlayCommand = new playPauseCommand(gw, 3);  //these two lines set the button
 			playButton.setCommand(myPlayCommand);                           // to say pause
 			if(gw.getSound()==true)

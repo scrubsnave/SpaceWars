@@ -1,8 +1,12 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 import java.util.LinkedList;
 import java.util.Random;
 
+import com.codename1.charts.models.Point;
+import com.codename1.ui.Graphics;
+
 public class Opponent extends GameObject implements Moving, ICollider{
+	
 	private double speed;
 	private int direction;
 	private LinkedList<GameObject> haveCollidedWith = new LinkedList<GameObject>();
@@ -39,7 +43,7 @@ public class Opponent extends GameObject implements Moving, ICollider{
 		return direction;
 	}
 	
-	public void move(int time){
+	public void move(){
 		
 		Random num = new Random();
 		int dirVar = 0;//5-num.nextInt(10); //create random number between -5 and 5
@@ -57,30 +61,29 @@ public class Opponent extends GameObject implements Moving, ICollider{
 	}
 	
 	public void checkOutOfBounds(int gameWidth, int gameHeight) {
-		Random num = new Random();
-		
-		if (this.getLocationX() < 0 ){
-			this.setDirection(90-num.nextInt(180));
-			this.setLocationX(1);}
-		else if(this.getLocationX() > gameWidth){
-			this.setDirection(90+num.nextInt(180));
-			this.setLocationX(gameWidth-1);}
-		else if(this.getLocationY() < 0){
-			this.setDirection(180+num.nextInt(180));
-			this.setLocationY(1);}
-		else if(this.getLocationY()> gameHeight){
-			this.setDirection(num.nextInt(180));
-			this.setLocationY(gameHeight-1);}
-	
-		
+		Random num = new Random();		
+		if (this.getLocationX() < 0 ){					//if cur obj x location is less than 0
+			this.setDirection(90-num.nextInt(180));		//set new direction somewhere in the right side of the y axis
+			this.setLocationX(1);}						//set location back in bounds
+		else if(this.getLocationX() > gameWidth){		//if cur obj x location is greater than the screen size
+			this.setDirection(90+num.nextInt(180));		//set new direction somewhere on the left side of y axis
+			this.setLocationX(gameWidth-1);}			//set location back in bounds
+		else if(this.getLocationY() < 0){				//if cur obj y location is less than 0
+			this.setDirection(180+num.nextInt(180));	//set new direction somewhere below x axis
+			this.setLocationY(1);}						//set location back in bounds
+		else if(this.getLocationY()> gameHeight){		//if cur obj y location is greater than screen size
+			this.setDirection(num.nextInt(180));		//set new direction somewhere above x axis
+			this.setLocationY(gameHeight-1);}			//set location back in bounds		
 	}
 	
 	public Opponent(){
-		new GameObject();
 		Random num = new Random();
 		setSize(50+num.nextInt(30));//set's the size of the opponent to a random number between 20-50
 		setDirection(num.nextInt(359));//set's the direction to any number between 0-359
+		setLocationX(num.nextInt(1023)+num.nextFloat());//set's x location to a random number between 0.0-1024.0
+		setLocationY(num.nextInt(767)+num.nextFloat());//set's y location to a random number between 0.0-767.0
 	}
+	
 	
 	
 	public boolean collidesWith(ICollider otherObject) {
@@ -103,9 +106,15 @@ public class Opponent extends GameObject implements Moving, ICollider{
 		if(distBetweenCentersSqr <= radiiSqr) {result = true;}		
 		return result;
 	}
+
+	public void handleCollision(ICollider otherObject) {System.out.println("This should never happen1");}
 	
-	public void handleCollision(ICollider otherObject) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void move(int time) {System.out.println("This should never happen2");}
+
+	String returnType() {System.out.println("This should never happen3");return null;}
+
+	int getPoints() {System.out.println("This should never happen4");return 0;}
+
+	@Override
+	void draw(Graphics g, Point p) {System.out.println("SHOULD NEVER GET HEREEEE");}
 }

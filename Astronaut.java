@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
@@ -14,6 +14,11 @@ public class Astronaut extends Opponent implements IDrawable, ISelectable{
 		String myDesc = "Astronaut: loc="+this.getLocationX()+","+this.getLocationY()+" color = ["+ColorUtil.red(getColor()) + "," + ColorUtil.green(getColor())+","+ColorUtil.blue(getColor())+"] size="+this.getSize()+" speed="+this.getSpeed()+" dir="+this.getDirection()+" health="+this.getHealth();
 		return myDesc;
 	}
+	
+	public String returnType(){return "Astronaut";}
+	
+	@Override
+	public int getPoints(){return 5+this.getHealth();}
 	
 	public int getHealth(){
 		return health;

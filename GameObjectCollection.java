@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import java.util.Vector;
 
@@ -6,6 +6,7 @@ public class GameObjectCollection implements ICollection{
 
 	private Vector<GameObject> theCollection;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public GameObjectCollection(){
 		theCollection = new Vector();
 	}

@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import com.codename1.ui.Command;
 import com.codename1.ui.events.ActionEvent;
@@ -22,7 +22,7 @@ public class playPauseCommand extends Command{
 			System.out.println("THE GAME IS PAUSED");
 		else
 			System.out.println("THE GAME IS RESUMED");
-		temp.setPlayPause();
+		temp.switchPlayPause();
 	}
 	
 }

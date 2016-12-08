@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 
 import com.codename1.ui.Display;
@@ -16,29 +16,22 @@ import java.io.IOException;
  * of building native mobile applications using Java.
  */
 public class starter {
-
     private Form current;
     private Resources theme;
-
     public void init(Object context) {
         theme = UIManager.initFirstTheme("/theme");
-
         // Enable Toolbar on all Forms by default
         Toolbar.setGlobalToolbar(true);
-
         // Pro only feature, uncomment if you have a pro subscription
         // Log.bindCrashProtection(true);
     }
     
-    public void start() {
-        
+    public void start() {        
     	if(current != null){
             current.show();
             return;
-        }
-        
-        new Game();
-       
+        }        
+        new Game();       
     }
 
     public void stop() {

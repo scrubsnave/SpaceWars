@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 
 import com.codename1.charts.models.Point;
@@ -14,6 +14,10 @@ public class Alien extends Opponent implements IDrawable{
 	
 		return myDesc;
 	}
+	
+	public String returnType(){return "Alien";}
+	
+	public int getPoints(){return -10;}
 	
 	public Alien(){
 		new Opponent();

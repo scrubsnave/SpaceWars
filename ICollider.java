@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 public interface ICollider {
 	public boolean collidesWith (ICollider otherObject);
