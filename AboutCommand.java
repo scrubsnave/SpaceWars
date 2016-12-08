@@ -1,12 +1,10 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Command;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
-import com.codename1.ui.TextArea;
 import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.FlowLayout;
 
 public class AboutCommand extends Command{

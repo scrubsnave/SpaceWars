@@ -1,8 +1,10 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
+import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.Graphics;
 
-public final class Spaceship extends Rescuer {
+public final class Spaceship extends Rescuer implements IDrawable{
 	
 	private static Spaceship instance = null;
 	public String toString(){
@@ -10,6 +12,7 @@ public final class Spaceship extends Rescuer {
 	
 		return myDesc;
 	}
+
 	
 	public void moveLeft(){
 		this.setLocationX(getLocationX()-10);
@@ -33,5 +36,13 @@ public final class Spaceship extends Rescuer {
 	public static synchronized Spaceship getInstance(){
 		if(instance ==null) instance = new Spaceship();
 		return instance;
+	}
+
+	public void draw(Graphics g, Point pCmpRelPrnt) {
+		g.setColor(getColor());
+		int numX = (int) (getLocationX()+pCmpRelPrnt.getX());
+		int numY = (int) (getLocationY()+pCmpRelPrnt.getY());
+		g.drawRect(numX-(getSize()/2), numY-(getSize()/2), getSize(), getSize());
+		
 	}
 }

@@ -1,4 +1,4 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
 public interface IIterator {
 
@@ -6,4 +6,5 @@ public interface IIterator {
 	GameObject getNext();
 	void remove();
 	void replace(GameObject newObject);
+	int getSize();
 }
