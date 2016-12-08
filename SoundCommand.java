@@ -1,4 +1,4 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
 import com.codename1.ui.Command;
 import com.codename1.ui.events.ActionEvent;
@@ -12,6 +12,9 @@ public class SoundCommand extends Command{
 	
 	public void actionPerformed(ActionEvent ev){
 		System.out.println("sound command is invoked...");
-		temp.setSound();		
+		if(temp.getSound()==true)
+			temp.setSound(false);
+		else
+			temp.setSound(true);
 	}
 }

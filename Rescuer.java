@@ -1,4 +1,4 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
 public class Rescuer extends GameObject implements Guider{
 	

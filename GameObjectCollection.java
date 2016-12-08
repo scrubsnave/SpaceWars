@@ -1,4 +1,4 @@
-package com.mycompany.a2;
+package com.mycompany.a3;
 
 import java.util.Vector;
 
@@ -17,6 +17,7 @@ public class GameObjectCollection implements ICollection{
 	public IIterator getIterator() {
 		return new GameObjectIterator();
 	}
+	
 
 
 
@@ -28,10 +29,10 @@ private class GameObjectIterator implements IIterator{
 	}
 	
 	public boolean hasNext() {
-		if(theCollection.size()<=0) 
-			return false;
-		if (currElementIndex == theCollection.size() - 1) 
-			return false;
+		if(theCollection.size()<=0){
+			return false;}
+		if (currElementIndex == theCollection.size() - 1){
+			return false;}
 		
 		return true;
 	}
@@ -50,7 +51,20 @@ private class GameObjectIterator implements IIterator{
 		theCollection.setElementAt(newObject, currElementIndex);
 	}
 
+	public int getSize() {
+		return theCollection.size();
+
 	}
+
+
+
+
+}
+
+public int getSize() {
+	return theCollection.size();
+
+}
 }
 
 
