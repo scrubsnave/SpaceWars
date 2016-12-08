@@ -1,39 +1,57 @@
-package com.mycompany.a1;
+package com.mycompany.a2;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
 import java.util.Random;
 
-public class GameWorld {
+public class GameWorld extends Observable {
 
 	private int astroResc;//Astronauts Rescued
 	private int alienResc;//Aliens Rescued
 	private int astroRem;//Astronauts remaining
 	private int alienRem;//aliens remaining
 	private int score;//total score
-	private Spaceship vlad;
-	private LinkedList<Astronaut> damsel = new LinkedList<Astronaut>();
-	private LinkedList<Alien> et = new LinkedList<Alien>();
-	private boolean closeProg = false;
+	private boolean sound;//is sound ON or OFF
+	private Spaceship vlad; //vlad is the hero of this story
+	private GameObjectCollection damsel1 = new GameObjectCollection();
+	private GameObjectCollection et1 = new GameObjectCollection();
+	//private LinkedList<Astronaut> damsel = new LinkedList<Astronaut>(); //LinkedList variable of all the Astronaut (damsels in distress)
+	//private LinkedList<Alien> et = new LinkedList<Alien>(); //LinkedList variable of all the aliens (et phone home)
 	
+	
+	/*
+	 *****************************************************************************************************************************
+	 * initializes some basic housekeeping
+	 * pre: 	nothing
+	 * post: 	sets Astronaut rescued to 0
+	 * 			sets Aliens rescued to 0
+	 * 			sets Astronauts remaining to 0
+	 * 			sets Aliens remaining to 0
+	 * 			sets score to 0
+	 * 			constructs the spaceship
+	 * 			constructs the LinkedList containing 4 Astronauts
+	 * 			constructs the LinkedList containing 3 Aliens
+	 */
 	public void init(){
-		//some housekeeping
 		setAstroResc(0);
 		setAlienResc(0);
 		setAstroRem(4);
 		setAlienRem(3);
 		setScore(0);
-		//the hero is always named vlad
-		vlad = new Spaceship();
-		//creating damsels in distress
-		for(int i =0;i<4;i++)
-		damsel.add(new Astronaut());
-		//These ET's are the evil kind.
+		vlad = Spaceship.getInstance();
+		for(int i =0;i<4;i++){
+			damsel1.add(new Astronaut());
+		}		
 		for(int i=0;i<3;i++){
-		et.add(new Alien());
+			et1.add(new Alien());
 		}
 	}
 	
-	//setter and getter for Astronauts Rescued variable.
+	/*
+	 ****************************************************************************************************************************** 
+	 * setter and getter for Astronauts Rescued variable.
+	 */
 	public void setAstroResc(int newAstroResc){
 		astroResc=newAstroResc;
 	}
@@ -41,7 +59,10 @@ public class GameWorld {
 		return astroResc;
 	}
 	
-	//setter and getter for Aliens (accidently) Rescued variable.
+	/*
+	 ******************************************************************************************************************************
+	 * setter and getter for Aliens (accidently) Rescued variable.
+	 */
 	public void setAlienResc(int newAlienResc){
 		alienResc=newAlienResc;
 	}
@@ -49,7 +70,10 @@ public class GameWorld {
 		return alienResc;
 	}
 	
-	//setter and getter for astronauts remaining variable.
+	/*
+	 ****************************************************************************************************************************** 
+	 * setter and getter for astronauts remaining variable.
+	 */
 	public void setAstroRem(int newAstroRem){
 		astroRem=newAstroRem;
 	}
@@ -58,7 +82,10 @@ public class GameWorld {
 	}
 	
 	
-	//setter and getter for aliens remaining variable.
+	/*
+	 ****************************************************************************************************************************** 
+	 * setter and getter for aliens remaining variable.
+	 */
 	public void setAlienRem(int newAlienRem){
 		alienRem=newAlienRem;
 	}
@@ -66,8 +93,10 @@ public class GameWorld {
 		return alienRem;
 	}
 	
-	
-	//setter and getter for your game score.
+	/*
+	 ****************************************************************************************************************************** 
+	 * setter and getter for your game score.
+	 */
 	public void setScore(int newScore){
 		astroResc=score;
 	}
@@ -75,26 +104,52 @@ public class GameWorld {
 		return score;
 	}
 	
-	//done
-	public void toMap(){
-		closeProg=false;
+	/*
+	 ****************************************************************************************************************************** 
+	 * setter and getter for SOUND.
+	 */
+	public void setSound(){
+		if (sound==true) sound=false;
+		else sound=true;
 		
-		//lets print some hero stuff
-		System.out.println(vlad.toString());
-		for(int i=0;i<astroRem;i++){
-			Astronaut curAst = damsel.get(i);
-			System.out.println(curAst.toString());
-		}
-		
-		for(int i=0;i<alienRem;i++){
-			Alien curAl = et.get(i);
-			System.out.println(curAl.toString());
-		}		
+		this.setChanged();
+		this.notifyObservers();
+	}
+	public String getSound(){
+		if (sound==true) return "ON";
+		else return "OFF";
 	}
 	
-	//done
+	/*
+	 ****************************************************************************************************************************** 
+	 * toMap prints out some info about all the objects in the game giving a map of the world in text form
+	 * pre: nothing
+	 * post: prints out the info for all created game objects
+	 */
+	public void toMap(){
+			
+		//lets print some hero stuff
+		System.out.println(vlad.toString());
+		IIterator it = damsel1.getIterator();
+		while(it.hasNext()){
+			System.out.println(it.getNext().toString());
+		}
+		
+		it = et1.getIterator();
+		while(it.hasNext()){
+			System.out.println(it.getNext().toString());
+		}
+		
+	}
+	
+	/*
+	 ******************************************************************************************************************************
+	 * toAlien will teleport the spaceship to a random Alien
+	 * pre:nothing
+	 * post:spaceships location changes to that of a random alien
+	 */
 	public void toAlien(){
-		closeProg=false;
+		
 		if(alienRem==0){
 			System.out.println("No aliens remaining to teleport to!");
 			return;
@@ -102,91 +157,163 @@ public class GameWorld {
 		else{
 			Random num = new Random();
 			int temp=(num.nextInt(alienRem-1));
-			Alien curAl=et.get(temp);
+			IIterator it = et1.getIterator();
+			Alien curAl=new Alien();
+			for(int i =-1;i<temp;i++){
+				curAl=(Alien) it.getNext();}			
 			vlad.setLocationX(curAl.getLocationX());
 			vlad.setLocationY(curAl.getLocationY());
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 * toAstronaut will teleport the spaceship to a random Astronaut
+	 * pre: nothing
+	 * post: spaceship's location changes to that of a random Astronaut
+	 */
 	public void toAstronaut(){
-		closeProg=false;
+		
 		Random num = new Random();
 		int temp=(num.nextInt(astroRem-1));
-		vlad.setLocationX(damsel.get(temp).getLocationX());
-		vlad.setLocationY(damsel.get(temp).getLocationY());
+		IIterator it = damsel1.getIterator();
+		Astronaut curAs=new Astronaut();
+		for(int i =-1;i<temp;i++){
+			curAs=(Astronaut) it.getNext();}
+		vlad.setLocationX(curAs.getLocationX());
+		vlad.setLocationY(curAs.getLocationY());
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 * spaceshipMoveR tells the spaceship to call the function moveRight
+	 * pre: nothing
+	 * post: moveRight method is called
+	 */
 	public void spaceshipMoveR(){
-		closeProg=false;
+		
 		vlad.moveRight();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ****************************************************************************************************************************** 
+	 * spaceshipMoveL tells the spaceship to call the function moveLeft
+	 * pre: nothing
+	 * post: moveLeft method is called
+	 */
 	public void spaceshipMoveL(){
-		closeProg=false;
+		
 		vlad.moveLeft();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 *SpaceshipMoveU tells the spaceship to call the function moveUp
+	 */
 	public void spaceshipMoveU(){
-		closeProg=false;
+		
 		vlad.moveUp();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 *SpaceshipMoveD tells the spaceship to call the function moveDown 
+	 */
 	public void spaceshipMoveD(){
-		closeProg=false;
+		
 		vlad.moveDown();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
+	
+	/*
+	 ******************************************************************************************************************************
+	 *expand opens the "doors" (increases the size of the doors) by 10 
+	 */
 	public void expand(){
-		closeProg=false;
+		
 		vlad.setSize(vlad.getSize()+10);
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
+	/*
+	 ******************************************************************************************************************************
+	 *contract closes the "doors" (decreases the size) by 10 
+	 */
 	public void contract(){
 		vlad.setSize(vlad.getSize()-10);
-		closeProg=false;
+		this.setChanged();
+		this.notifyObservers();		
 	}
 	
+	/*
+	 ******************************************************************************************************************************
+	 *tick is kind of like the game clock moving forward by 1 sec so all aliens move once
+	 */
 	public void tick(){
-		for(int i=0;i<alienRem;i++){
-			et.get(i).move();			
+		IIterator it = et1.getIterator();
+		while(it.hasNext()){
+			Alien curAl = (Alien) it.getNext();
+			curAl.move();
+			it.replace(curAl);
 		}		
-		closeProg=false;
+		this.setChanged();
+		this.notifyObservers();
+		
 	}
 	
+	/*
+	 ******************************************************************************************************************************
+	 *collect tells the spaceship to take all aliens/astronauts in his door space 
+	 */
 	public void collect(){
 		double curLocX=vlad.getLocationX();
 		double curLocY=vlad.getLocationY();
-		for(int i=0;i<astroRem;i++){
-			Astronaut curAst = damsel.get(i);
+		IIterator it = damsel1.getIterator();
+		while(it.hasNext()){
+			Astronaut curAst = (Astronaut) it.getNext();
 			if(curAst.getLocationX() <= (curLocX+(vlad.getSize()/2)) && curAst.getLocationX() >= (curLocX-(vlad.getSize()/2)))
 				if(curAst.getLocationY() <= (curLocY+(vlad.getSize()/2)) && curAst.getLocationY() >= (curLocY-(vlad.getSize()/2))){
 					score=score+5+curAst.getHealth();
-					damsel.remove(i);
+					it.remove();
 					astroRem--;
 					astroResc++;
-				}							
-		}		
-		for(int i=0;i<alienRem;i++){
-			Alien curAl = et.get(i);
+				}	
+		}
+		it = et1.getIterator();
+		while(it.hasNext()){
+			Alien curAl = (Alien) it.getNext();
 			if(curAl.getLocationX() <= (curLocX+(vlad.getSize()/2)) && curAl.getLocationX() >= (curLocX-(vlad.getSize()/2)))
 				if(curAl.getLocationY() <= (curLocY+(vlad.getSize()/2)) && curAl.getLocationY() >= (curLocY-(vlad.getSize()/2))){
 					score=score-10;
-					et.remove(i);
+					it.remove();
 					alienRem--;
 					alienResc++;
 				}	
-			}		
-		closeProg=false;
+			}
+		this.setChanged();
+		this.notifyObservers();
+		
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 *alienCol simulates two random aliens colliding with each other and creating another alien near the collision 
+	 */
 	public void alienCol(){
-		closeProg=false;
+		
 		if (alienRem<2){
 			System.out.println("It is not possible for a Alien on Alien collision because there are not enough aliens!");
 			return;
@@ -194,23 +321,34 @@ public class GameWorld {
 		else{
 			Random num = new Random();
 			int temp = num.nextInt(alienRem-1);
+			IIterator it = et1.getIterator();
+			Alien curAl = new Alien();
+			
+			for(int i =-1;i<temp;i++){
+				curAl = (Alien) it.getNext();}
+			
 			Alien newAlien = new Alien();
-			if(et.get(temp).getLocationX()>974)
-				newAlien.setLocationX(et.get(temp).getLocationX()-num.nextInt(50));
+			if(curAl.getLocationX()>974)
+				newAlien.setLocationX(curAl.getLocationX()-num.nextInt(50));
 			else
-				newAlien.setLocationX(et.get(temp).getLocationX()+num.nextInt(50));
-			if(et.get(temp).getLocationY()>717)			
-				newAlien.setLocationY(et.get(temp).getLocationY()-num.nextInt(50));
+				newAlien.setLocationX(curAl.getLocationX()+num.nextInt(50));
+			if(curAl.getLocationY()>717)			
+				newAlien.setLocationY(curAl.getLocationY()-num.nextInt(50));
 			else
-				newAlien.setLocationY(et.get(temp).getLocationY()+num.nextInt(50));
-			et.add(newAlien);
+				newAlien.setLocationY(curAl.getLocationY()+num.nextInt(50));
+			et1.add(newAlien);
 			alienRem++;
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 *fightCol simulates an astronaut and a alien colliding with each other and everything that comes from that.
+	 */
 	public void fightCol(){
-		closeProg=false;
+		
 		if (alienRem==0){
 			System.out.println("It is not possible for a Astronaut-Alien collision because there are no aliens!");
 			return;
@@ -218,40 +356,43 @@ public class GameWorld {
 		else{
 			Random num = new Random();
 			int temp=num.nextInt(astroRem-1);
-			damsel.get(temp).setHealth(damsel.get(temp).getHealth()-1);
-			damsel.get(temp).setSpeed(damsel.get(temp).getHealth());
-			//change color???
+			Astronaut damsel = new Astronaut();
+			IIterator it = damsel1.getIterator();
+			for(int i =-1;i<temp;i++){
+				damsel = (Astronaut) it.getNext();}
+			
+			damsel.setHealth(damsel.getHealth()-1);
+			damsel.setColor(0,(damsel.getHealth()*50+5),0);
+			damsel.setSpeed(damsel.getHealth());
+			
+			it.replace(damsel);
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	//done
+	/*
+	 ******************************************************************************************************************************
+	 *scorePrint prints out the current score of the game.
+	 */
 	public void scorePrint(){
-		closeProg=false;
+		
 		System.out.println("Current Score: "+score+" # of Astronauts rescued: "+astroResc+" Number of Aliens on Spaceship: "+alienResc+" Aliens Left: "+alienRem);
 	}
 	
+	/*
+	 *closeProgram closes the game.
+	 */
 	public void closeProgram(){
-		System.out.println("Would you like to close the program? (y/n)");
-		closeProg=true;
+		System.exit(0);
 	}
 	
-	public void yEnter(){
-		if (closeProg==true)
-			System.exit(0);
-		else
-			invalidKey();
-			
-	}
-	
-	public void nEnter(){
-		if (closeProg==true)
-			closeProg=false;
-		else
-			invalidKey();
-		
-	}
-	
+	/*
+	 ******************************************************************************************************************************
+	 * invalidKey prints an error for when an invalid key is entered into the game.
+	 */
 	public void invalidKey(){
 		System.out.println("The key that you entered is unforunately invalid. Please try again! :)");	
 	}
+	
 }

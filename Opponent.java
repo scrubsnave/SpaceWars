@@ -1,4 +1,4 @@
-package com.mycompany.a1;
+package com.mycompany.a2;
 import java.util.Random;
 
 public class Opponent extends GameObject implements Moving{
