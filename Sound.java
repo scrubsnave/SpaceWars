@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import java.io.InputStream;
 
@@ -24,6 +24,5 @@ public class Sound {
 	public void play(){
 		m.setTime(0);;
 		m.play();
-		System.out.println("A SOUND WAS PLAYED");
 	}
 }

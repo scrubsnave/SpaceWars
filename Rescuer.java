@@ -1,6 +1,6 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
-public class Rescuer extends GameObject implements Guider{
+public abstract class Rescuer extends GameObject implements Guider{
 	
 	
 	public void moveLeft(){

@@ -1,4 +1,6 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
+
+import java.util.Random;
 
 import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
@@ -15,6 +17,11 @@ public class Astronaut extends Opponent implements IDrawable, ISelectable{
 		return myDesc;
 	}
 	
+	public String returnType(){return "Astronaut";}
+	
+	@Override
+	public int getPoints(){return 5+this.getHealth();}
+	
 	public int getHealth(){
 		return health;
 	}
@@ -24,8 +31,12 @@ public class Astronaut extends Opponent implements IDrawable, ISelectable{
 	}
 	
 	
-	public Astronaut(){
-		new Opponent();
+	public Astronaut(int worldWidth,int worldHeight){
+		Random num = new Random();
+		setLocationX(num.nextInt(worldWidth)+num.nextFloat());//set's x location to a random number between 0.0-1024.0
+		setLocationY(num.nextInt(worldHeight)+num.nextFloat());//set's y location to a random number between 0.0-767.0
+		setSize(50+num.nextInt(30));//set's the size of the opponent to a random number between 20-50
+		setDirection(num.nextInt(359));//set's the direction to any number between 0-359
 		health=5;
 		setSpeed(health*speedConst);
 		setColor(0,255,0);
@@ -48,7 +59,7 @@ public class Astronaut extends Opponent implements IDrawable, ISelectable{
 		
 	}	
 	
-	public void handleCollision(Alien otherObject, GameWorld gw) {
+	public void handleCollision(Alien otherObject, GameObjectCollection allAiGameObj, GameWorld gw) {
 		
 		if(this.containsObj(otherObject))
 			return;

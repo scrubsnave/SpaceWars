@@ -1,4 +1,6 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
+
+import java.util.Random;
 
 import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
@@ -29,12 +31,15 @@ public final class Spaceship extends Rescuer implements IDrawable{
 	public void moveDown(){
 		this.setLocationY(getLocationY()-10);
 	}
-	private Spaceship(){
+	private Spaceship(int worldWidth,int worldHeight){
+		Random num = new Random();
+		setLocationX(num.nextInt(worldWidth)+num.nextFloat());//set's x location to a random number between 0.0-1024.0
+		setLocationY(num.nextInt(worldHeight)+num.nextFloat());//set's y location to a random number between 0.0-767.0
 		setSize(100);
 		setColor(0,0,255);
 	}
-	public static synchronized Spaceship getInstance(){
-		if(instance ==null) instance = new Spaceship();
+	public static synchronized Spaceship getInstance(int worldWidth,int worldHeight){
+		if(instance ==null) instance = new Spaceship(worldWidth,worldHeight);
 		return instance;
 	}
 
@@ -45,4 +50,24 @@ public final class Spaceship extends Rescuer implements IDrawable{
 		g.drawRect(numX-(getSize()/2), numY-(getSize()/2), getSize(), getSize());
 		
 	}
+
+
+	@Override
+	String returnType() {return "Spaceship";}
+
+
+	@Override
+	int getPoints() {return -1;}
+
+
+	@Override
+	void handleCollision(Alien otherObj, GameObjectCollection allAiGameObj, GameWorld gw) {}
+
+
+	@Override
+	boolean collidesWith(GameObject otherObj) {return false;}
+
+
+	@Override
+	void removeObj(GameObject otherObj) {}
 }

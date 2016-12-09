@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import java.util.Vector;
 
@@ -6,6 +6,7 @@ public class GameObjectCollection implements ICollection{
 
 	private Vector<GameObject> theCollection;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public GameObjectCollection(){
 		theCollection = new Vector();
 	}
@@ -40,6 +41,10 @@ private class GameObjectIterator implements IIterator{
 	public GameObject getNext() {
 		currElementIndex++;
 		return (theCollection.elementAt(currElementIndex));
+	}
+	
+	public GameObject getCurrent() {
+		return(theCollection.elementAt(currElementIndex));
 	}
 
 	public void remove() {
