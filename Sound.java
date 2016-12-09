@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import java.io.InputStream;
 
@@ -10,20 +10,14 @@ public class Sound {
 	private Media m;
 	public Sound(String filename){
 		try{
-			InputStream is = Display.getInstance().getResourceAsStream(getClass(), "/"+filename);
-			
+			InputStream is = Display.getInstance().getResourceAsStream(getClass(), "/"+filename);			
 			m=MediaManager.createMedia(is,  "audio/wav");
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
+		catch(Exception e){e.printStackTrace();}		
 	}
 	
 	public void play(){
 		m.setTime(0);;
 		m.play();
-		System.out.println("A SOUND WAS PLAYED");
 	}
 }

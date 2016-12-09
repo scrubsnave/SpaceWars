@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Command;
@@ -20,7 +20,6 @@ public class HelpCommand extends Command{
 		ab.add(new SpanLabel("e = expand the door / c = contract the door / s = open the door and update score / r = move right / l = move left / u = move up / d = move down / o = move spaceship to random astronaut / a = move spaceship to random alien / w = create new alien / f = an alien-astronaut fight occurs / t = clock ticks / x = exit game", "DialogBody"));
 		int h = Display.getInstance().getDisplayHeight();
 		ab.setDisposeWhenPointerOutOfBounds(true);
-		ab.show(0, h /9 * 7, 0, 0);
-		
+		ab.show(0, h /9 * 7, 0, 0);		
 	}
 }

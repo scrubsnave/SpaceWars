@@ -1,5 +1,4 @@
-package com.mycompany.a3;
-
+package com.mycompany.a4;
 
 public interface ICollection {
 	void add(GameObject newObject);

@@ -1,5 +1,5 @@
-package com.mycompany.a3;
-
+package com.mycompany.a4;
+//CLEANED UP
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,33 +11,17 @@ public class MapView extends Container implements Observer{
 	private GameWorld temp;
 	
 	public void update(Observable gw, Object data) {
-		temp=((GameWorld) gw);		
-		((GameWorld) gw).toMap();
-		
-		this.repaint();
-		
+		temp=((GameWorld) gw);
+		this.repaint();		
 	}
 	
 	@Override
 	public void paint(Graphics g){		
-		super.paint(g);
-		
-		Point p = new Point(getX(),getY());		
-		//draw new Spaceship
-		temp.getSpIt().draw(g,p);
-		
-		//draw new astronauts
-		IIterator it = temp.getAsIt();
-		while(it.hasNext()){
-			((Astronaut) it.getNext()).draw(g, p);				
-		}
-		
-		//draw new aliens
-		it = temp.getAlIt();
-		while(it.hasNext()){
-			((Alien) it.getNext()).draw(g, p);
-		}
-		
+		super.paint(g);		
+		Point p = new Point(getX(),getY());			
+		temp.getSpIt().draw(g,p);							//draw spaceship		
+		IIterator it = temp.getGOIt();
+		while(it.hasNext()){it.getNext().draw(g, p);}		//draw all game objects
 	}
 	
 	public void pointerPressed(int x, int y){
@@ -45,17 +29,16 @@ public class MapView extends Container implements Observer{
 		y = y - getParent().getAbsoluteY();
 		Point pPtrRelPrnt = new Point(x, y);
 		Point pCmpRelPrnt = new Point(getX(), getY());
-		IIterator it = temp.getAsIt();
-		Astronaut newAstro = new Astronaut();
+		IIterator it = temp.getGOIt();
+		Opponent tempObj;
 		
-		for (int i = 0; i < it.getSize() ; i++){
-			if(it.hasNext())
-				newAstro=(Astronaut) it.getNext();
-			if(newAstro.contains(pPtrRelPrnt, pCmpRelPrnt))
-				newAstro.setSelected(true);
+		while(it.hasNext()){
+			tempObj=(Opponent) it.getNext();
+			if(tempObj.returnType()!="Astronaut"){continue;}
+			if(((Astronaut) tempObj).contains(pPtrRelPrnt, pCmpRelPrnt))
+				((Astronaut) tempObj).setSelected(true);
 			else
-				newAstro.setSelected(false);
-		}
-		
+				((Astronaut) tempObj).setSelected(false);
+		}		
 		repaint();}
 }

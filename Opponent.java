@@ -1,29 +1,15 @@
-package com.mycompany.a3;
-import java.util.LinkedList;
+package com.mycompany.a4;
 import java.util.Random;
 
-public class Opponent extends GameObject implements Moving, ICollider{
+public abstract class Opponent extends GameObject implements Moving, ICollider{
+	
 	private double speed;
 	private int direction;
-	private LinkedList<GameObject> haveCollidedWith = new LinkedList<GameObject>();
+	int antiCollision = 0;
 	
-	public void removeObj(GameObject otherObject){
-		while(haveCollidedWith.contains(otherObject))
-			haveCollidedWith.removeFirstOccurrence(otherObject);
-	}
-	
-	public void addObj(GameObject otherObject){
-		haveCollidedWith.add(otherObject);
-	}
-	
-	public boolean containsObj(GameObject otherObject){
-		boolean result = false;
-		if (haveCollidedWith.contains(otherObject))
-			result = true;
-		
-		return result;
-	}
-	
+	public void flagCollision(){antiCollision=2000;}
+	public void unFlagCollision(){antiCollision--;}
+	public int getFlag(){return antiCollision;}
 	
 	public void setSpeed(double d){
 		speed=d;
@@ -39,11 +25,10 @@ public class Opponent extends GameObject implements Moving, ICollider{
 		return direction;
 	}
 	
-	public void move(int time){
-		
+	public void move(){
+		antiCollision--;
 		Random num = new Random();
-		int dirVar = 0;//5-num.nextInt(10); //create random number between -5 and 5
-			//changes the direction by a factor of +/- 5	
+		int dirVar = 5-num.nextInt(10); //create random number between -5 and 5 and changes the direction by a factor of +/- 5	
 		double deltaX=Math.cos(this.getDirection()+dirVar)*(this.getSpeed()); //find the change in location on x axis
 		double deltaY=Math.sin(this.getDirection()+dirVar)*(this.getSpeed()); //find the change in location on y axis
 		
@@ -51,45 +36,35 @@ public class Opponent extends GameObject implements Moving, ICollider{
 		double newLocationY = this.getLocationY()+deltaY;
 		
 		this.setLocationX(newLocationX); //set new location as old location plus change in location
-		this.setLocationY(newLocationY); //set new location as old location plus change in location		
-		
-		
+		this.setLocationY(newLocationY); //set new location as old location plus change in location				
 	}
 	
 	public void checkOutOfBounds(int gameWidth, int gameHeight) {
-		Random num = new Random();
-		
-		if (this.getLocationX() < 0 ){
-			this.setDirection(90-num.nextInt(180));
-			this.setLocationX(1);}
-		else if(this.getLocationX() > gameWidth){
-			this.setDirection(90+num.nextInt(180));
-			this.setLocationX(gameWidth-1);}
-		else if(this.getLocationY() < 0){
-			this.setDirection(180+num.nextInt(180));
-			this.setLocationY(1);}
-		else if(this.getLocationY()> gameHeight){
-			this.setDirection(num.nextInt(180));
-			this.setLocationY(gameHeight-1);}
-	
-		
+		Random num = new Random();		
+		if (this.getLocationX() < 0 ){					//if cur obj x location is less than 0
+			this.setDirection(90-num.nextInt(180));		//set new direction somewhere in the right side of the y axis
+			this.setLocationX(1);}						//set location back in bounds
+		else if(this.getLocationX() > gameWidth){		//if cur obj x location is greater than the screen size
+			this.setDirection(90+num.nextInt(180));		//set new direction somewhere on the left side of y axis
+			this.setLocationX(gameWidth-1);}			//set location back in bounds
+		else if(this.getLocationY() < 0){				//if cur obj y location is less than 0
+			this.setDirection(180+num.nextInt(180));	//set new direction somewhere below x axis
+			this.setLocationY(1);}						//set location back in bounds
+		else if(this.getLocationY()> gameHeight){		//if cur obj y location is greater than screen size
+			this.setDirection(num.nextInt(180));		//set new direction somewhere above x axis
+			this.setLocationY(gameHeight-1);}			//set location back in bounds		
 	}
 	
-	public Opponent(){
-		new GameObject();
-		Random num = new Random();
-		setSize(50+num.nextInt(30));//set's the size of the opponent to a random number between 20-50
-		setDirection(num.nextInt(359));//set's the direction to any number between 0-359
-	}
-	
-	
-	public boolean collidesWith(ICollider otherObject) {
+	public boolean collidesWith(GameObject otherObject) {
 		boolean result = false;
+		if(this.getFlag()>0){return false;}
+		if(((Opponent) otherObject).getFlag()>0){return false;}
+			
 		double thisCenterX = this.getLocationX() + (this.getSize()/2);
 		double thisCenterY = this.getLocationY() + (this.getSize()/2);
 		
-		double otherCenterX = ((GameObject) otherObject).getLocationX() + (((GameObject) otherObject).getSize()/2);
-		double otherCenterY = ((GameObject) otherObject).getLocationY() + (((GameObject) otherObject).getSize()/2);
+		double otherCenterX=otherObject.getLocationX() + otherObject.getSize()/2;
+		double otherCenterY=otherObject.getLocationY() + otherObject.getSize()/2;
 		
 		double dx = thisCenterX - otherCenterX;
 		double dy = thisCenterY - otherCenterY;
@@ -100,12 +75,9 @@ public class Opponent extends GameObject implements Moving, ICollider{
 		int otherRadius = ((GameObject) otherObject).getSize()/2;
 		int radiiSqr = (thisRadius*thisRadius + 2*thisRadius*otherRadius + otherRadius*otherRadius);
 		
-		if(distBetweenCentersSqr <= radiiSqr) {result = true;}		
-		return result;
-	}
-	
-	public void handleCollision(ICollider otherObject) {
-		// TODO Auto-generated method stub
-		
+		if(distBetweenCentersSqr <= radiiSqr) {
+			result=true;
+			this.flagCollision();}
+		return result;		
 	}
 }

@@ -1,4 +1,4 @@
-package com.mycompany.a3;
+package com.mycompany.a4;
 
 import java.io.InputStream;
 
@@ -11,13 +11,10 @@ public class BGSound implements Runnable{
 	
 	public BGSound(String fileName){
 		try{
-			InputStream is = Display.getInstance().getResourceAsStream(getClass(), "/"+fileName);
-			
+			InputStream is = Display.getInstance().getResourceAsStream(getClass(), "/"+fileName);			
 			m = MediaManager.createMedia(is, "audio/wav",this);
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){e.printStackTrace();}
 	}
 	public void pause(){m.pause();}
 	public void play(){m.play();}
